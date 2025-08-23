@@ -124,7 +124,7 @@ hr {
     color: var(--secondary-text-color);
 
 
-    background-image: linear-gradient(rgba(14, 36, 49, 0.7), rgba(14, 36, 49, 0.7)), url('image/hero.jpg');
+    background-image: linear-gradient(rgba(14, 36, 49, 0.7), rgba(14, 36, 49, 0.7)), url('../image/hero.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -238,7 +238,7 @@ footer .social-icons a:hover {
 
 @media (min-width: 769px) {
     .firstSection {
-        background-image: linear-gradient(rgba(14, 36, 49, 0.7), rgba(14, 36, 49, 0.7)), url('image/hero01.JPG');
+        background-image: linear-gradient(rgba(14, 36, 49, 0.7), rgba(14, 36, 49, 0.7)), url('../image/hero01.JPG');
 
         
         background-attachment: fixed;
