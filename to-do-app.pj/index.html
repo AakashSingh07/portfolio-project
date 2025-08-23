@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .task-item.completed span {
+            text-decoration: line-through;
+            color: #9ca3af; 
+        }
+        .filter-btn.active {
+            background-color: #3b82f6; 
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <div class="container mx-auto max-w-2xl mt-10 sm:mt-20 px-4">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-bold text-blue-600 dark:text-blue-400">To-Do List</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">Stay organized, one task at a time.</p>
+        </header>
+
+        <main class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            
+            <form id="todo-form" class="flex items-center gap-4 mb-6">
+                <input 
+                    type="text" 
+                    id="todo-input" 
+                    placeholder="Add a new task..." 
+                    class="flex-grow bg-gray-100 dark:bg-gray-700 border-2 border-transparent focus:border-blue-500 rounded-lg py-3 px-4 outline-none transition-all duration-300"
+                >
+                <button 
+                    type="submit" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                >
+                    Add
+                </button>
+            </form>
+
+            
+            <div id="filter-container" class="flex justify-center gap-2 sm:gap-4 mb-6">
+                <button class="filter-btn active py-2 px-4 rounded-lg font-medium transition-colors duration-300" data-filter="all">All</button>
+                <button class="filter-btn py-2 px-4 rounded-lg font-medium transition-colors duration-300" data-filter="active">Active</button>
+                <button class="filter-btn py-2 px-4 rounded-lg font-medium transition-colors duration-300" data-filter="completed">Completed</button>
+            </div>
+
+        
+            <ul id="todo-list" class="space-y-3">
+               
+            </ul>
+        </main>
+        
+        <footer class="text-center mt-8 text-gray-500 dark:text-gray-400 text-sm">
+            <p>Created with ❤️ using HTML, Tailwind CSS, and JavaScript.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const todoForm = document.getElementById('todo-form');
+            const todoInput = document.getElementById('todo-input');
+            const todoList = document.getElementById('todo-list');
+            const filterContainer = document.getElementById('filter-container');
+
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let currentFilter = 'all';
+
+            const saveTasks = () => {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            };
+
+            const renderTasks = () => {
+                todoList.innerHTML = ''; 
+
+                const filteredTasks = tasks.filter(task => {
+                    if (currentFilter === 'completed') {
+                        return task.completed;
+                    }
+                    if (currentFilter === 'active') {
+                        return !task.completed;
+                    }
+                    return true; // 'all' filter
+                });
+
+                if (filteredTasks.length === 0) {
+                    todoList.innerHTML = `
+                        <li class="text-center text-gray-500 dark:text-gray-400 py-4">
+                            No tasks here. Add one above!
+                        </li>
+                    `;
+                    return;
+                }
+
+                filteredTasks.forEach(task => {
+                    const taskElement = document.createElement('li');
+                    taskElement.dataset.id = task.id;
+                    taskElement.className = `task-item flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-4 rounded-lg transition-all duration-300 ${task.completed ? 'completed' : ''}`;
+
+                    taskElement.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" ${task.completed ? 'checked' : ''} class="task-checkbox h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                            <span class="text-lg">${task.text}</span>
+                        </div>
+                        <button class="delete-btn text-gray-400 hover:text-red-500 transition-colors duration-300">
+                            <i class="fas fa-trash-alt fa-lg"></i>
+                        </button>
+                    `;
+                    todoList.appendChild(taskElement);
+                });
+            };
+
+           
+            todoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const taskText = todoInput.value.trim();
+
+                if (taskText !== '') {
+                    const newTask = {
+                        id: Date.now(), 
+                        text: taskText,
+                        completed: false
+                    };
+                    tasks.push(newTask);
+                    saveTasks();
+                    renderTasks();
+                    todoInput.value = '';
+                    todoInput.focus();
+                }
+            });
+
+            todoList.addEventListener('click', (e) => {
+                const target = e.target;
+                const taskElement = target.closest('.task-item');
+                if (!taskElement) return;
+
+                const taskId = Number(taskElement.dataset.id);
+
+                if (target.classList.contains('task-checkbox')) {
+                    const task = tasks.find(t => t.id === taskId);
+                    if (task) {
+                        task.completed = !task.completed;
+                        saveTasks();
+                        renderTasks();
+                    }
+                }
+
+                if (target.closest('.delete-btn')) {
+                    tasks = tasks.filter(t => t.id !== taskId);
+                    saveTasks();
+                    renderTasks();
+                }
+            });
+
+            filterContainer.addEventListener('click', (e) => {
+                const target = e.target.closest('.filter-btn');
+                if (target) {
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    target.classList.add('active');
+                    
+                    currentFilter = target.dataset.filter;
+                    renderTasks();
+                }
+            });
+
+            renderTasks();
+        });
+    </script>
+</body>
+</html>

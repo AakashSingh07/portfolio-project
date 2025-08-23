@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+}
+.calculator-btn {
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+}
+
+.calculator-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.5); 
+}
+
+#display {
+    font-family: 'Orbitron', sans-serif; 
+}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+</style>
+   
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-xs md:max-w-sm mx-auto bg-white rounded-2xl shadow-2xl p-6">
+        
+        <div class="bg-gray-800 text-white rounded-lg p-4 mb-6 shadow-inner">
+            <input id="display" type="text" class="w-full bg-transparent text-right text-4xl md:text-5xl font-bold border-0 focus:ring-0" value="0" readonly>
+        </div>
+
+        <div class="grid grid-cols-4 gap-3">
+            <button class="calculator-btn bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="clearDisplay()">C</button>
+            <button class="calculator-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('/')">/</button>
+            <button class="calculator-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('*')">x</button>
+            <button class="calculator-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="deleteLast()">DEL</button>
+
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('7')">7</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('8')">8</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('9')">9</button>
+            <button class="calculator-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('-')">-</button>
+
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('4')">4</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('5')">5</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('6')">6</button>
+            <button class="calculator-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('+')">+</button>
+
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('1')">1</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('2')">2</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('3')">3</button>
+            <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl row-span-2" onclick="calculateResult()">=</button>
+
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl col-span-2" onclick="appendToDisplay('0')">0</button>
+            <button class="calculator-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 rounded-lg shadow-md transition-transform transform hover:scale-105 text-2xl" onclick="appendToDisplay('.')">.</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById('display');
+
+    function appendToDisplay(value) {
+        if (display.value === '0' || display.value === 'Error') {
+            display.value = value;
+        } else {
+            display.value += value;
+        }
+    }
+    
+    function clearDisplay() {
+        display.value = '0';
+    }
+   
+    function deleteLast() {
+        display.value = display.value.toString().slice(0, -1);
+        if (display.value === '') {
+            display.value = '0';
+        }
+    }
+
+   
+    function calculateResult() {
+        try {
+            
+            const result = new Function('return ' + display.value)();
+            if (isNaN(result) || !isFinite(result)) {
+                display.value = 'Error';
+            } else {
+                display.value = parseFloat(result.toFixed(10));
+            }
+        } catch (error) {
+            display.value = 'Error';
+        }
+    }
+    document.addEventListener('keydown', function(event) {
+        const key = event.key;
+        
+        if (key >= '0' && key <= '9') {
+            appendToDisplay(key);
+        } else if (key === '.') {
+            appendToDisplay('.');
+        } else if (key === '+') {
+            appendToDisplay('+');
+        } else if (key === '-') {
+            appendToDisplay('-');
+        } else if (key === '*') {
+            appendToDisplay('*');
+        } else if (key === '/') {
+            appendToDisplay('/');
+        } else if (key === 'Enter' || key === '=') {
+            event.preventDefault(); 
+            calculateResult();
+        } else if (key === 'Backspace') {
+            deleteLast();
+        } else if (key === 'Escape' || key.toLowerCase() === 'c') {
+            clearDisplay();
+        }
+    });
+    </script>
+</body>
+</html>

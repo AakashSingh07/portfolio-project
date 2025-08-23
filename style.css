@@ -1,0 +1,246 @@
+
+
+:root {
+    --primary-color: #0e2431;
+    --accent-color: #007bff;
+    --text-color: #333;
+    --secondary-text-color: #f0f8ff;
+    --background-light: #ffffff;
+    --hover-color: #00509e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-light);
+    color: var(--text-color);
+    transition: margin-left 0.4s ease;
+}
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: var(--secondary-text-color);
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.4s ease;
+    z-index: 1001;
+}
+
+.navbar.active {
+    left: 0;
+}
+
+.navbar .left {
+    color: var(--secondary-text-color);
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    padding-left: 10px;
+}
+
+.nav-links {
+    list-style: none;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links li a:hover {
+    background-color: var(--hover-color);
+}
+
+
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 28px;
+    color: var(--primary-color);
+    background-color: var(--background-light);
+    border-radius: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+    z-index: 1002;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.menu-toggle.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+body.sidebar-open {
+    margin-left: 250px;
+}
+
+main {
+    padding: 0; 
+}
+
+main section:not(.firstSection) {
+    padding: 60px 20px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+hr {
+    border: 0;
+    background: #e0e0e0;
+    height: 1px;
+    margin: 60px auto;
+    width: 80%;
+}
+
+.firstSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    color: var(--secondary-text-color);
+
+
+    background-image: linear-gradient(rgba(14, 36, 49, 0.7), rgba(14, 36, 49, 0.7)), url('image/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.leftSection {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.leftSection .Blue,
+.leftSection #element {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+#about p, #skills li, #projects li, #education p, #contact p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+#skills ul, #projects ul {
+    list-style: none;
+    padding: 0;
+}
+
+#projects li strong {
+    color: var(--primary-color);
+}
+
+#contact a, #education a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+#contact a:hover {
+    text-decoration: underline;
+}
+
+
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 10px 15px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    display: none;
+    z-index: 999;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: var(--primary-color);
+    color: var(--secondary-text-color);
+}
+
+footer .social-icons {
+    margin-top: 15px;
+}
+
+footer .social-icons a {
+    color: var(--secondary-text-color);
+    margin: 0 12px;
+    font-size: 1.5rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+footer .social-icons a:hover {
+    color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+
+
+@media (max-width: 768px) {
+    body.sidebar-open {
+        margin-left: 0;
+    }
+
+    main section:not(.firstSection) {
+        padding: 60px 15px;
+    }
+
+    .leftSection {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .firstSection {
+        background-image: linear-gradient(rgba(14, 36, 49, 0.7), rgba(14, 36, 49, 0.7)), url('image/hero01.JPG');
+
+        
+        background-attachment: fixed;
+    }
+}
